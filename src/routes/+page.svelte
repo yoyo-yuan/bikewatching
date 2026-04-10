@@ -3,6 +3,7 @@
     import "mapbox-gl/dist/mapbox-gl.css";
     import { onMount } from "svelte";
     import * as d3 from 'd3';
+    mapboxgl.accessToken = "pk.eyJ1IjoieW95b3l1YW4iLCJhIjoiY21udDllamhnMG05MzJyb2R5aWc5dnBseSJ9.vGsvK4kAnD-1KWTS3rYNDg";
 
     let map;
     async function initMap() {
@@ -59,6 +60,7 @@
     const departuresByMinute = Array.from({length: 1440}, () => []);
     const arrivalsByMinute = Array.from({length: 1440}, () => []);
     async function loadData() {
+        await new Promise(resolve => map.on("load", resolve));
         stations = await d3.csv("https://vis-society.github.io/labs/9/data/bluebikes-stations.csv");
         trips = await d3.csv("https://vis-society.github.io/labs/9/data/bluebikes-traffic-2024-03.csv").then(trips => {
             for (let trip of trips) {
@@ -71,15 +73,6 @@
             }
             return trips;
         });
-    }
-    function getCoords (station) {
-        let point = new mapboxgl.LngLat(+station.Long, +station.Lat);
-        let {x, y} = map.project(point);
-        return {cx: x, cy: y};
-    }
-    onMount(async () => {
-        mapboxgl.accessToken = "pk.eyJ1IjoieW95b3l1YW4iLCJhIjoiY21udDllamhnMG05MzJyb2R5aWc5dnBseSJ9.vGsvK4kAnD-1KWTS3rYNDg";
-        await Promise.all([initMap(), loadData()]);
         departures = d3.rollup(trips, v => v.length, d => d.start_station_id);
         arrivals = d3.rollup(trips, v => v.length, d => d.end_station_id);
         stations = stations.map(station => {
@@ -89,6 +82,15 @@
             station.totalTraffic = station.arrivals + station.departures;
             return station;
         });
+    }
+    function getCoords (station) {
+        let point = new mapboxgl.LngLat(+station.Long, +station.Lat);
+        let {x, y} = map.project(point);
+        return {cx: x, cy: y};
+    }
+    onMount(() => {
+        initMap();
+        loadData();
     });
     $: radiusScale = d3.scaleSqrt()
         .domain([0, d3.max(stations, d => d.totalTraffic) || 0])
