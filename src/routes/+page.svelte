@@ -1,6 +1,4 @@
 <script>
-    import mapboxgl from "mapbox-gl";
-    import "mapbox-gl/dist/mapbox-gl.css";
     import { onMount } from "svelte";
     import * as d3 from 'd3';
     mapboxgl.accessToken = "pk.eyJ1IjoieW95b3l1YW4iLCJhIjoiY21udDllamhnMG05MzJyb2R5aWc5dnBseSJ9.vGsvK4kAnD-1KWTS3rYNDg";
