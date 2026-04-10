@@ -1,6 +1,6 @@
 <script>
     import mapboxgl from "mapbox-gl";
-    import "../../node_modules/mapbox-gl/dist/mapbox-gl.css";
+    import "mapbox-gl/dist/mapbox-gl.css";
     import { onMount } from "svelte";
     import * as d3 from 'd3';
 

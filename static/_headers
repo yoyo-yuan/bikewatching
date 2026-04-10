@@ -1,2 +1,0 @@
-/*
-  Content-Security-Policy: worker-src blob: ; child-src blob: ; img-src data: blob: https: ; connect-src https: ;
