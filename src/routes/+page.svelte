@@ -7,12 +7,13 @@
     let map;
     async function initMap() {
         map = new mapboxgl.Map({
-            container: 'map',
+            container: 'mapbox',
             center: [-71.09415, 42.36027],
             zoom: 12,
             style: "mapbox://styles/mapbox/streets-v12",
         });
         await new Promise(resolve => map.on("load", resolve));
+        map.on("move", () => mapViewChanged++);
 
         // Boston bike lanes
         map.addSource("boston_route", {
@@ -54,7 +55,6 @@
     let arrivals = new Map();
     const departuresByMinute = Array.from({length: 1440}, () => []);
     const arrivalsByMinute = Array.from({length: 1440}, () => []);
-    $: map?.on("move", evt => mapViewChanged++);
     async function loadData() {
         stations = await d3.csv("https://vis-society.github.io/labs/9/data/bluebikes-stations.csv");
         trips = await d3.csv("https://vis-society.github.io/labs/9/data/bluebikes-traffic-2024-03.csv").then(trips => {
@@ -220,6 +220,7 @@
             {/each}
         {/key}
     </svg>
+    <div id="mapbox"></div>
 </div>
 <div class="legend">
     <span class="legend-title">Legend:</span>
@@ -234,6 +235,11 @@
     #map {
         flex: 1;
         position: relative;
+    }
+
+    #mapbox {
+        position: absolute;
+        inset: 0;
     }
 
     #map svg {
