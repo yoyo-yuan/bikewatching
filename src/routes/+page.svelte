@@ -3,7 +3,7 @@
     import "../../node_modules/mapbox-gl/dist/mapbox-gl.css";
     import { onMount } from "svelte";
     import * as d3 from 'd3';
-    mapboxgl.accessToken = "pk.eyJ1IjoieW95b3l1YW4iLCJhIjoiY21ucm81a2V2MDRlMzJwb2d2Yng3NmxxaSJ9.faZ4FJA3ADCJ18RQW4VW9g";
+    mapboxgl.accessToken = "pk.eyJ1IjoieW95b3l1YW4iLCJhIjoiY21udDllamhnMG05MzJyb2R5aWc5dnBseSJ9.vGsvK4kAnD-1KWTS3rYNDg";
 
     let map;
     async function initMap() {
