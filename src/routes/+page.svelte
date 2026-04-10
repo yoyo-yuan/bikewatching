@@ -12,6 +12,9 @@
             zoom: 12,
             style: "mapbox://styles/mapbox/streets-v12",
         });
+        map.on('error', (e) => {
+            console.error('Mapbox error:', e);
+        });
         await new Promise(resolve => map.on("load", resolve));
         map.on("move", () => mapViewChanged++);
 
